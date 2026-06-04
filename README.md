@@ -54,11 +54,20 @@ Users can upload files, keep them private by default, and optionally share them 
 # Backend
 cd backend
 npm install
-cp .env.example .env
 
 # Frontend
 cd ../frontend
 npm install
+```
+
+Then copy the example env file:
+
+```bash
+# Mac / Linux
+cp backend/.env.example backend/.env
+
+# Windows
+copy backend\.env.example backend\.env
 ```
 
 ### Run
