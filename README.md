@@ -35,7 +35,7 @@ Users can upload files, keep them private by default, and optionally share them 
 |-------|----------------------------------------------------|-------------|
 | 1     | Project scaffold — both servers start, health check | ✅ Done     |
 | 2     | PostgreSQL schema + user auth (register / login)   | ✅ Done     |
-| 3     | File upload, download, and delete                  | Upcoming    |
+| 3     | File upload, download, and delete                  | ✅ Done     |
 | 4     | Public share links + activity logging              | Upcoming    |
 | 5     | Security hardening + error handling                | Upcoming    |
 
@@ -131,6 +131,72 @@ SecureVault/
 │   ├── src/
 │   │   ├── pages/
 │   │   │   ├── Dashboard.jsx
+│   │   │   ├── Login.jsx
+│   │   │   └── Register.jsx
+│   │   ├── App.jsx
+│   │   ├── main.jsx
+│   │   └── index.css
+│   ├── index.html
+│   ├── .env.example
+│   ├── package.json
+│   └── vite.config.js
+└── .gitignore
+```
+
+---
+
+## Phase 3 — Files
+
+### What was added
+
+- **Auth middleware** (`backend/src/middleware/auth.js`) — verifies JWT on every protected route
+- **File routes** (`backend/src/routes/files.js`)
+  - `POST /api/files/upload` — upload a file (max 10 MB, stored in `backend/uploads/`)
+  - `GET /api/files` — list the signed-in user's files
+  - `GET /api/files/:id/download` — download a file
+  - `DELETE /api/files/:id` — delete a file from disk and the database
+- **Schema** (`backend/src/schema.sql`) — `files` table (id, user_id FK, filename, original_name, size, mimetype, created_at)
+- **Dashboard** rebuilt — file list with upload, download, and delete
+
+### Database update
+
+Run the updated schema to add the `files` table (safe to run again — uses `IF NOT EXISTS`):
+
+```bash
+psql -U postgres -d securevault -f backend/src/schema.sql
+```
+
+### Install
+
+```bash
+cd backend
+npm install
+```
+
+---
+
+## Project Structure (Phase 3)
+
+```
+SecureVault/
+├── backend/
+│   ├── src/
+│   │   ├── middleware/
+│   │   │   └── auth.js         # JWT verification middleware
+│   │   ├── routes/
+│   │   │   ├── auth.js         # Register + login endpoints
+│   │   │   └── files.js        # Upload, list, download, delete
+│   │   ├── app.js
+│   │   ├── db.js               # PostgreSQL connection pool
+│   │   └── schema.sql          # Database schema
+│   ├── uploads/                # Uploaded files (git-ignored)
+│   ├── .env.example
+│   ├── package.json
+│   └── server.js
+├── frontend/
+│   ├── src/
+│   │   ├── pages/
+│   │   │   ├── Dashboard.jsx   # File list, upload, download, delete
 │   │   │   ├── Login.jsx
 │   │   │   └── Register.jsx
 │   │   ├── App.jsx
