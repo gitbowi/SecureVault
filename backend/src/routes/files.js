@@ -1,6 +1,5 @@
 const express = require('express');
 const multer  = require('multer');
-const crypto  = require('crypto');
 const path    = require('path');
 const fs      = require('fs');
 const pool    = require('../db');
@@ -23,7 +22,7 @@ const upload = multer({ storage, limits: { fileSize: 10 * 1024 * 1024 } });
 router.get('/', auth, async (req, res) => {
   try {
     const { rows } = await pool.query(
-      'SELECT id, original_name, size, mimetype, share_token, created_at FROM files WHERE user_id = $1 ORDER BY created_at DESC',
+      'SELECT id, original_name, size, mimetype, created_at FROM files WHERE user_id = $1 ORDER BY created_at DESC',
       [req.user.userId]
     );
     res.json({ files: rows });
@@ -41,7 +40,7 @@ router.post('/upload', auth, (req, res, next) => {
   if (!req.file) return res.status(400).json({ error: 'No file provided.' });
   try {
     const { rows } = await pool.query(
-      'INSERT INTO files (user_id, filename, original_name, size, mimetype) VALUES ($1, $2, $3, $4, $5) RETURNING id, original_name, size, mimetype, share_token, created_at',
+      'INSERT INTO files (user_id, filename, original_name, size, mimetype) VALUES ($1, $2, $3, $4, $5) RETURNING id, original_name, size, mimetype, created_at',
       [req.user.userId, req.file.filename, req.file.originalname, req.file.size, req.file.mimetype]
     );
     res.status(201).json({ file: rows[0] });
@@ -78,35 +77,6 @@ router.delete('/:id', auth, async (req, res) => {
     log(req.user.userId, 'delete', rows[0].original_name);
   } catch {
     res.status(500).json({ error: 'Delete failed.' });
-  }
-});
-
-router.post('/:id/share', auth, async (req, res) => {
-  try {
-    const token   = crypto.randomUUID();
-    const { rows } = await pool.query(
-      'UPDATE files SET share_token = $1 WHERE id = $2 AND user_id = $3 RETURNING original_name, share_token',
-      [token, req.params.id, req.user.userId]
-    );
-    if (!rows[0]) return res.status(404).json({ error: 'File not found.' });
-    res.json({ share_token: rows[0].share_token });
-    log(req.user.userId, 'share', rows[0].original_name);
-  } catch {
-    res.status(500).json({ error: 'Could not generate share link.' });
-  }
-});
-
-router.delete('/:id/share', auth, async (req, res) => {
-  try {
-    const { rows } = await pool.query(
-      'UPDATE files SET share_token = NULL WHERE id = $1 AND user_id = $2 RETURNING original_name',
-      [req.params.id, req.user.userId]
-    );
-    if (!rows[0]) return res.status(404).json({ error: 'File not found.' });
-    res.status(204).end();
-    log(req.user.userId, 'unshare', rows[0].original_name);
-  } catch {
-    res.status(500).json({ error: 'Could not remove share link.' });
   }
 });
 

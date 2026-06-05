@@ -200,18 +200,11 @@ body {
 
 .file-item {
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  align-items: center;
+  gap: 0.75rem;
   padding: 0.75rem 1rem;
   border: 1px solid #e2e8f0;
   border-radius: 8px;
-}
-
-.file-main {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  width: 100%;
 }
 
 .file-name {
@@ -234,38 +227,6 @@ body {
   flex-shrink: 0;
 }
 
-.share-row {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding-top: 0.375rem;
-  border-top: 1px solid #f1f5f9;
-}
-
-.share-url {
-  flex: 1;
-  font-size: 0.75rem;
-  color: #64748b;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.btn-copy {
-  padding: 0.25rem 0.625rem;
-  background: transparent;
-  color: #3b82f6;
-  border: 1px solid #bfdbfe;
-  border-radius: 6px;
-  font-size: 0.75rem;
-  cursor: pointer;
-  flex-shrink: 0;
-  transition: background 0.15s;
-}
-
-.btn-copy:hover {
-  background: #eff6ff;
-}
 
 .btn-secondary {
   padding: 0.375rem 0.75rem;

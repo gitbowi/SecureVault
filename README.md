@@ -1,8 +1,8 @@
 # SecureVault
 
-A secure file storage and sharing web app — built from scratch in phases.
+A secure file storage web app — built from scratch in phases.
 
-Users can upload files, keep them private by default, and optionally share them via a public link. Every action is logged so there's always a clear record of what happened.
+Users can upload files and keep them private. Every action is logged so there's always a clear record of what happened.
 
 ---
 
@@ -10,9 +10,8 @@ Users can upload files, keep them private by default, and optionally share them 
 
 - Account registration and login (bcrypt + JWT)
 - Upload, download, and delete files
-- Private files by default — toggle a public share link per file
-- Activity log: login, upload, download, delete, and share events
-- Dashboard with storage stats and file list
+- Activity log: register, login, upload, download, and delete events
+- Dashboard with file list and activity history
 
 ---
 
@@ -36,7 +35,7 @@ Users can upload files, keep them private by default, and optionally share them 
 | 1     | Project scaffold — both servers start, health check | ✅ Done     |
 | 2     | PostgreSQL schema + user auth (register / login)   | ✅ Done     |
 | 3     | File upload, download, and delete                  | ✅ Done     |
-| 4     | Public share links + activity logging              | ✅ Done     |
+| 4     | Activity logging                                   | ✅ Done     |
 | 5     | Security hardening + error handling                | Upcoming    |
 
 ---
@@ -127,8 +126,6 @@ npm run dev
 
 ### Database update
 
-Run the updated schema to add the `files` table (safe to run again — uses `IF NOT EXISTS`):
-
 ```bash
 psql -U postgres -d securevault -f backend/src/schema.sql
 ```
@@ -142,19 +139,15 @@ npm install
 
 ---
 
-## Phase 4 — Share Links + Activity Logging
+## Phase 4 — Activity Logging
 
 ### What was added
 
 - **Activity log helper** (`backend/src/lib/log.js`) — fire-and-forget logging, never blocks a response
 - **Activity routes** (`backend/src/routes/activity.js`) — `GET /api/activity` returns last 20 events for the signed-in user
-- **Share routes** (`backend/src/routes/share.js`) — `GET /api/share/:token` public download, no auth required
-- **File routes extended** (`backend/src/routes/files.js`)
-  - `POST /api/files/:id/share` — generates a UUID share token and saves it
-  - `DELETE /api/files/:id/share` — removes the share token (makes file private again)
-- **Schema** (`backend/src/schema.sql`) — `share_token` column on `files`; `activity_logs` table
-- **Dashboard** updated — Share / Unshare toggle per file, copy-to-clipboard link, activity log section
-- **Events logged** — register, login, upload, download, delete, share, unshare, share_download
+- **Schema** (`backend/src/schema.sql`) — `activity_logs` table (id, user_id FK, action, file_name, created_at)
+- **Dashboard** updated — activity log section below the file list
+- **Events logged** — register, login, upload, download, delete
 
 ### Database update
 
@@ -177,8 +170,7 @@ SecureVault/
 │   │   ├── routes/
 │   │   │   ├── activity.js         # Activity log endpoint
 │   │   │   ├── auth.js             # Register + login endpoints
-│   │   │   ├── files.js            # Upload, list, download, delete, share
-│   │   │   └── share.js            # Public share download (no auth)
+│   │   │   └── files.js            # Upload, list, download, delete
 │   │   ├── app.js
 │   │   ├── db.js                   # PostgreSQL connection pool
 │   │   └── schema.sql              # Database schema
@@ -189,7 +181,7 @@ SecureVault/
 ├── frontend/
 │   ├── src/
 │   │   ├── pages/
-│   │   │   ├── Dashboard.jsx       # File list, upload, share, activity log
+│   │   │   ├── Dashboard.jsx       # File list, upload, download, delete, activity log
 │   │   │   ├── Login.jsx
 │   │   │   └── Register.jsx
 │   │   ├── App.jsx
