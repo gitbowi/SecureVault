@@ -12,7 +12,6 @@ backend/uploads/*
 
 # Build output
 frontend/dist/
-frontend/build/
 
 # Logs
 *.log
