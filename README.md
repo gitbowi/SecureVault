@@ -112,39 +112,6 @@ npm run dev
 
 ---
 
-## Project Structure (Phase 2)
-
-```
-SecureVault/
-├── backend/
-│   ├── src/
-│   │   ├── routes/
-│   │   │   └── auth.js         # Register + login endpoints
-│   │   ├── app.js
-│   │   ├── db.js               # PostgreSQL connection pool
-│   │   └── schema.sql          # Database schema
-│   ├── uploads/                # File storage — added in Phase 3
-│   ├── .env.example
-│   ├── package.json
-│   └── server.js
-├── frontend/
-│   ├── src/
-│   │   ├── pages/
-│   │   │   ├── Dashboard.jsx
-│   │   │   ├── Login.jsx
-│   │   │   └── Register.jsx
-│   │   ├── App.jsx
-│   │   ├── main.jsx
-│   │   └── index.css
-│   ├── index.html
-│   ├── .env.example
-│   ├── package.json
-│   └── vite.config.js
-└── .gitignore
-```
-
----
-
 ## Phase 3 — Files
 
 ### What was added
@@ -175,7 +142,7 @@ npm install
 
 ---
 
-## Project Structure (Phase 3)
+## Project Structure
 
 ```
 SecureVault/

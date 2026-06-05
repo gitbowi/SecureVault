@@ -30,7 +30,12 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
-router.post('/upload', auth, upload.single('file'), async (req, res) => {
+router.post('/upload', auth, (req, res, next) => {
+  upload.single('file')(req, res, (err) => {
+    if (err) return res.status(400).json({ error: err.message });
+    next();
+  });
+}, async (req, res) => {
   if (!req.file) return res.status(400).json({ error: 'No file provided.' });
   try {
     const { rows } = await pool.query(

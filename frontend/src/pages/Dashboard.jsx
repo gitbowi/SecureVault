@@ -72,6 +72,7 @@ export default function Dashboard() {
   }
 
   async function handleDownload(file) {
+    setError('');
     try {
       const res = await fetch(`${API}/api/files/${file.id}/download`, { headers: authHeaders() });
       if (!res.ok) { setError('Download failed.'); return; }
@@ -88,6 +89,8 @@ export default function Dashboard() {
   }
 
   async function handleDelete(id) {
+    if (!window.confirm('Delete this file?')) return;
+    setError('');
     try {
       const res = await fetch(`${API}/api/files/${id}`, {
         method:  'DELETE',
