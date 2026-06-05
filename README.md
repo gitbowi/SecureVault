@@ -34,7 +34,7 @@ Users can upload files, keep them private by default, and optionally share them 
 | Phase | What gets added                                    | Status      |
 |-------|----------------------------------------------------|-------------|
 | 1     | Project scaffold — both servers start, health check | ✅ Done     |
-| 2     | PostgreSQL schema + user auth (register / login)   | ✅ Current  |
+| 2     | PostgreSQL schema + user auth (register / login)   | ✅ Done     |
 | 3     | File upload, download, and delete                  | Upcoming    |
 | 4     | Public share links + activity logging              | Upcoming    |
 | 5     | Security hardening + error handling                | Upcoming    |
