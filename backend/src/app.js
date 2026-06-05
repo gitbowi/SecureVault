@@ -1,7 +1,9 @@
-const express    = require('express');
-const cors       = require('cors');
-const authRoutes = require('./routes/auth');
-const fileRoutes = require('./routes/files');
+const express        = require('express');
+const cors           = require('cors');
+const authRoutes     = require('./routes/auth');
+const fileRoutes     = require('./routes/files');
+const shareRoutes    = require('./routes/share');
+const activityRoutes = require('./routes/activity');
 
 const app = express();
 
@@ -12,8 +14,10 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', project: 'SecureVault' });
 });
 
-app.use('/api/auth',  authRoutes);
-app.use('/api/files', fileRoutes);
+app.use('/api/auth',     authRoutes);
+app.use('/api/files',    fileRoutes);
+app.use('/api/share',    shareRoutes);
+app.use('/api/activity', activityRoutes);
 
 app.use((req, res) => res.status(404).json({ error: 'Not found.' }));
 

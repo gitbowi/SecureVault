@@ -36,7 +36,7 @@ Users can upload files, keep them private by default, and optionally share them 
 | 1     | Project scaffold — both servers start, health check | ✅ Done     |
 | 2     | PostgreSQL schema + user auth (register / login)   | ✅ Done     |
 | 3     | File upload, download, and delete                  | ✅ Done     |
-| 4     | Public share links + activity logging              | Upcoming    |
+| 4     | Public share links + activity logging              | ✅ Done     |
 | 5     | Security hardening + error handling                | Upcoming    |
 
 ---
@@ -142,28 +142,54 @@ npm install
 
 ---
 
+## Phase 4 — Share Links + Activity Logging
+
+### What was added
+
+- **Activity log helper** (`backend/src/lib/log.js`) — fire-and-forget logging, never blocks a response
+- **Activity routes** (`backend/src/routes/activity.js`) — `GET /api/activity` returns last 20 events for the signed-in user
+- **Share routes** (`backend/src/routes/share.js`) — `GET /api/share/:token` public download, no auth required
+- **File routes extended** (`backend/src/routes/files.js`)
+  - `POST /api/files/:id/share` — generates a UUID share token and saves it
+  - `DELETE /api/files/:id/share` — removes the share token (makes file private again)
+- **Schema** (`backend/src/schema.sql`) — `share_token` column on `files`; `activity_logs` table
+- **Dashboard** updated — Share / Unshare toggle per file, copy-to-clipboard link, activity log section
+- **Events logged** — register, login, upload, download, delete, share, unshare, share_download
+
+### Database update
+
+```bash
+psql -U postgres -d securevault -f backend/src/schema.sql
+```
+
+---
+
 ## Project Structure
 
 ```
 SecureVault/
 ├── backend/
 │   ├── src/
+│   │   ├── lib/
+│   │   │   └── log.js              # Activity log helper
 │   │   ├── middleware/
-│   │   │   └── auth.js         # JWT verification middleware
+│   │   │   └── auth.js             # JWT verification middleware
 │   │   ├── routes/
-│   │   │   ├── auth.js         # Register + login endpoints
-│   │   │   └── files.js        # Upload, list, download, delete
+│   │   │   ├── activity.js         # Activity log endpoint
+│   │   │   ├── auth.js             # Register + login endpoints
+│   │   │   ├── files.js            # Upload, list, download, delete, share
+│   │   │   └── share.js            # Public share download (no auth)
 │   │   ├── app.js
-│   │   ├── db.js               # PostgreSQL connection pool
-│   │   └── schema.sql          # Database schema
-│   ├── uploads/                # Uploaded files (git-ignored)
+│   │   ├── db.js                   # PostgreSQL connection pool
+│   │   └── schema.sql              # Database schema
+│   ├── uploads/                    # Uploaded files (git-ignored)
 │   ├── .env.example
 │   ├── package.json
 │   └── server.js
 ├── frontend/
 │   ├── src/
 │   │   ├── pages/
-│   │   │   ├── Dashboard.jsx   # File list, upload, download, delete
+│   │   │   ├── Dashboard.jsx       # File list, upload, share, activity log
 │   │   │   ├── Login.jsx
 │   │   │   └── Register.jsx
 │   │   ├── App.jsx

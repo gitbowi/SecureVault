@@ -2,6 +2,7 @@ const express = require('express');
 const bcrypt  = require('bcryptjs');
 const jwt     = require('jsonwebtoken');
 const pool    = require('../db');
+const log     = require('../lib/log');
 
 const router = express.Router();
 
@@ -25,6 +26,7 @@ router.post('/register', async (req, res) => {
       [email.toLowerCase().trim(), hash]
     );
     res.status(201).json({ user: rows[0] });
+    log(rows[0].id, 'register');
   } catch (err) {
     if (err.code === '23505') {
       return res.status(409).json({ error: 'Email already registered.' });
@@ -58,6 +60,7 @@ router.post('/login', async (req, res) => {
     );
 
     res.json({ token });
+    log(user.id, 'login');
   } catch {
     res.status(500).json({ error: 'Login failed.' });
   }

@@ -200,11 +200,18 @@ body {
 
 .file-item {
   display: flex;
-  align-items: center;
-  gap: 0.75rem;
+  flex-direction: column;
+  gap: 0.5rem;
   padding: 0.75rem 1rem;
   border: 1px solid #e2e8f0;
   border-radius: 8px;
+}
+
+.file-main {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
 }
 
 .file-name {
@@ -225,6 +232,39 @@ body {
   display: flex;
   gap: 0.5rem;
   flex-shrink: 0;
+}
+
+.share-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 0.375rem;
+  border-top: 1px solid #f1f5f9;
+}
+
+.share-url {
+  flex: 1;
+  font-size: 0.75rem;
+  color: #64748b;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.btn-copy {
+  padding: 0.25rem 0.625rem;
+  background: transparent;
+  color: #3b82f6;
+  border: 1px solid #bfdbfe;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+
+.btn-copy:hover {
+  background: #eff6ff;
 }
 
 .btn-secondary {
@@ -256,4 +296,45 @@ body {
 
 .btn-danger:hover {
   background: #fee2e2;
+}
+
+/* ── Activity log ── */
+.activity-section {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.activity-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.75rem;
+}
+
+.activity-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.activity-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.375rem 0;
+  border-bottom: 1px solid #f8fafc;
+}
+
+.activity-action {
+  font-size: 0.8rem;
+  color: #374151;
+}
+
+.activity-time {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  flex-shrink: 0;
+  margin-left: 0.5rem;
 }

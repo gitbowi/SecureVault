@@ -12,5 +12,17 @@ CREATE TABLE IF NOT EXISTS files (
   original_name TEXT NOT NULL,
   size          BIGINT NOT NULL,
   mimetype      TEXT NOT NULL,
+  share_token   TEXT UNIQUE,
   created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- Migration: add share_token to existing files table
+ALTER TABLE files ADD COLUMN IF NOT EXISTS share_token TEXT UNIQUE;
+
+CREATE TABLE IF NOT EXISTS activity_logs (
+  id         SERIAL PRIMARY KEY,
+  user_id    INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  action     TEXT NOT NULL,
+  file_name  TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
