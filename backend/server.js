@@ -1,6 +1,11 @@
 require('dotenv').config();
-const app = require('./src/app');
 
+if (!process.env.JWT_SECRET) {
+  console.error('FATAL: JWT_SECRET environment variable is not set.');
+  process.exit(1);
+}
+
+const app  = require('./src/app');
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {

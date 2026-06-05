@@ -54,10 +54,16 @@ export default function Dashboard() {
     fetchActivity();
   }, []);
 
+  function handleUnauthorized() {
+    localStorage.removeItem('sv_token');
+    navigate('/login');
+  }
+
   async function fetchFiles() {
     try {
       const res = await fetch(`${API}/api/files`, { headers: authHeaders() });
-      if (!res.ok) { logout(); return; }
+      if (res.status === 401) { handleUnauthorized(); return; }
+      if (!res.ok) { setError('Could not load files.'); return; }
       const data = await res.json();
       setFiles(data.files);
     } catch {
@@ -89,6 +95,7 @@ export default function Dashboard() {
         headers: authHeaders(),
         body:    form,
       });
+      if (res.status === 401) { handleUnauthorized(); return; }
       const data = await res.json();
       if (!res.ok) { setError(data.error || 'Upload failed.'); return; }
       setFiles(prev => [data.file, ...prev]);
@@ -105,6 +112,7 @@ export default function Dashboard() {
     setError('');
     try {
       const res = await fetch(`${API}/api/files/${file.id}/download`, { headers: authHeaders() });
+      if (res.status === 401) { handleUnauthorized(); return; }
       if (!res.ok) { setError('Download failed.'); return; }
       const blob = await res.blob();
       const url  = URL.createObjectURL(blob);
@@ -127,6 +135,7 @@ export default function Dashboard() {
         method:  'DELETE',
         headers: authHeaders(),
       });
+      if (res.status === 401) { handleUnauthorized(); return; }
       if (!res.ok) { setError('Delete failed.'); return; }
       setFiles(prev => prev.filter(f => f.id !== id));
       fetchActivity();
@@ -136,8 +145,7 @@ export default function Dashboard() {
   }
 
   function logout() {
-    localStorage.removeItem('sv_token');
-    navigate('/login');
+    handleUnauthorized();
   }
 
   return (

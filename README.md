@@ -36,7 +36,7 @@ Users can upload files and keep them private. Every action is logged so there's 
 | 2     | PostgreSQL schema + user auth (register / login)   | ✅ Done     |
 | 3     | File upload, download, and delete                  | ✅ Done     |
 | 4     | Activity logging                                   | ✅ Done     |
-| 5     | Security hardening + error handling                | Upcoming    |
+| 5     | Security hardening + error handling                | ✅ Done     |
 
 ---
 
@@ -193,6 +193,17 @@ SecureVault/
 │   └── vite.config.js
 └── .gitignore
 ```
+
+---
+
+## Phase 5 — Security Hardening
+
+### What was added
+
+- **Helmet** (`helmet`) — sets secure HTTP response headers (X-Content-Type-Options, X-Frame-Options, etc.)
+- **Rate limiting** (`express-rate-limit`) — login endpoint limited to 10 attempts per 15 minutes; returns a clear error message when exceeded
+- **Startup validation** (`server.js`) — server refuses to start if `JWT_SECRET` is missing
+- **401 handling on frontend** — expired or invalid token now redirects to login instead of showing a generic error
 
 ---
 
