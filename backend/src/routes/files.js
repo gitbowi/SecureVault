@@ -1,17 +1,17 @@
 const express = require('express');
-const multer  = require('multer');
-const path    = require('path');
-const fs      = require('fs');
-const pool    = require('../db');
-const auth    = require('../middleware/auth');
-const log     = require('../lib/log');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
+const pool = require('../db');
+const auth = require('../middleware/auth');
+const log = require('../lib/log');
 
-const router  = express.Router();
+const router = express.Router();
 const UPLOADS = path.join(__dirname, '../../uploads');
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, UPLOADS),
-  filename:    (req, file, cb) => {
+  filename: (req, file, cb) => {
     const unique = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
     cb(null, unique + path.extname(file.originalname));
   },

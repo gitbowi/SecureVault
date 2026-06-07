@@ -5,7 +5,7 @@ const API = import.meta.env.VITE_API_URL ?? '';
 
 function getEmail() {
   try {
-    const token   = localStorage.getItem('sv_token');
+    const token = localStorage.getItem('sv_token');
     const payload = JSON.parse(atob(token.split('.')[1]));
     return payload.email;
   } catch {
@@ -18,7 +18,7 @@ function authHeaders() {
 }
 
 function formatSize(bytes) {
-  if (bytes < 1024)         return `${bytes} B`;
+  if (bytes < 1024) return `${bytes} B`;
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
@@ -27,10 +27,10 @@ function formatAction(action, fileName) {
   const name = fileName ? ` "${fileName}"` : '';
   const map = {
     register: 'Created account',
-    login:    'Signed in',
-    upload:   `Uploaded${name}`,
+    login: 'Signed in',
+    upload: `Uploaded${name}`,
     download: `Downloaded${name}`,
-    delete:   `Deleted${name}`,
+    delete: `Deleted${name}`,
   };
   return map[action] || action;
 }
@@ -40,14 +40,14 @@ function formatDate(iso) {
 }
 
 export default function Dashboard() {
-  const navigate    = useNavigate();
-  const email       = getEmail();
-  const fileInput   = useRef(null);
-  const [files,     setFiles]     = useState([]);
-  const [logs,      setLogs]      = useState([]);
-  const [loading,   setLoading]   = useState(true);
+  const navigate = useNavigate();
+  const email = getEmail();
+  const fileInput = useRef(null);
+  const [files, setFiles] = useState([]);
+  const [logs, setLogs] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
-  const [error,     setError]     = useState('');
+  const [error, setError] = useState('');
 
   useEffect(() => {
     fetchFiles();
@@ -76,6 +76,7 @@ export default function Dashboard() {
   async function fetchActivity() {
     try {
       const res = await fetch(`${API}/api/activity`, { headers: authHeaders() });
+      if (res.status === 401) { handleUnauthorized(); return; }
       if (!res.ok) return;
       const data = await res.json();
       setLogs(data.logs);
