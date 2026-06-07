@@ -15,9 +15,6 @@ CREATE TABLE IF NOT EXISTS files (
   created_at    TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
--- Migration: remove share_token if it exists from a previous version
-ALTER TABLE files DROP COLUMN IF EXISTS share_token;
-
 CREATE TABLE IF NOT EXISTS activity_logs (
   id         SERIAL PRIMARY KEY,
   user_id    INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
