@@ -4,10 +4,10 @@ import { useNavigate, Link } from 'react-router-dom';
 const API = import.meta.env.VITE_API_URL ?? '';
 
 export default function Register() {
-  const [email,    setEmail]    = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error,    setError]    = useState('');
-  const [loading,  setLoading]  = useState(false);
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   async function handleSubmit(e) {
@@ -15,10 +15,10 @@ export default function Register() {
     setError('');
     setLoading(true);
     try {
-      const res  = await fetch(`${API}/api/auth/register`, {
-        method:  'POST',
+      const res = await fetch(`${API}/api/auth/register`, {
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password }),
       });
       const data = await res.json();
       if (!res.ok) {
@@ -64,7 +64,7 @@ export default function Register() {
           </div>
           {error && <p className="error-msg">{error}</p>}
           <button type="submit" className="btn-primary" disabled={loading}>
-            {loading ? 'Creating account…' : 'Create account'}
+            {loading ? 'Creating account...' : 'Create account'}
           </button>
         </form>
         <p className="auth-link">

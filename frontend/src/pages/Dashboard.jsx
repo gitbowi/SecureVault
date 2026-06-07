@@ -91,10 +91,10 @@ export default function Dashboard() {
     try {
       const form = new FormData();
       form.append('file', file);
-      const res  = await fetch(`${API}/api/files/upload`, {
-        method:  'POST',
+      const res = await fetch(`${API}/api/files/upload`, {
+        method: 'POST',
         headers: authHeaders(),
-        body:    form,
+        body: form,
       });
       if (res.status === 401) { handleUnauthorized(); return; }
       const data = await res.json();
@@ -116,9 +116,9 @@ export default function Dashboard() {
       if (res.status === 401) { handleUnauthorized(); return; }
       if (!res.ok) { setError('Download failed.'); return; }
       const blob = await res.blob();
-      const url  = URL.createObjectURL(blob);
-      const a    = document.createElement('a');
-      a.href     = url;
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
       a.download = file.original_name;
       a.click();
       URL.revokeObjectURL(url);
@@ -133,7 +133,7 @@ export default function Dashboard() {
     setError('');
     try {
       const res = await fetch(`${API}/api/files/${id}`, {
-        method:  'DELETE',
+        method: 'DELETE',
         headers: authHeaders(),
       });
       if (res.status === 401) { handleUnauthorized(); return; }
@@ -170,13 +170,13 @@ export default function Dashboard() {
             disabled={uploading}
           />
           <label htmlFor="file-input" className={`btn-upload${uploading ? ' disabled' : ''}`}>
-            {uploading ? 'Uploading…' : 'Upload file'}
+            {uploading ? 'Uploading...' : 'Upload file'}
           </label>
           {error && <p className="error-msg" style={{ marginTop: '0.75rem' }}>{error}</p>}
         </div>
 
         {loading ? (
-          <p className="file-list-empty">Loading…</p>
+          <p className="file-list-empty">Loading...</p>
         ) : files.length === 0 ? (
           <p className="file-list-empty">No files yet. Upload one above.</p>
         ) : (

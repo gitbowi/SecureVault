@@ -14,7 +14,7 @@ body {
   min-height: 100vh;
 }
 
-/* ── Auth pages ── */
+/* Auth pages */
 .auth-page {
   display: flex;
   align-items: center;
@@ -118,7 +118,7 @@ body {
   text-decoration: underline;
 }
 
-/* ── Dashboard ── */
+/* Dashboard */
 .dashboard-page {
   display: flex;
   align-items: flex-start;
@@ -227,7 +227,6 @@ body {
   flex-shrink: 0;
 }
 
-
 .btn-secondary {
   padding: 0.375rem 0.75rem;
   background: transparent;
@@ -259,7 +258,7 @@ body {
   background: #fee2e2;
 }
 
-/* ── Activity log ── */
+/* Activity log */
 .activity-section {
   margin-top: 1.5rem;
   padding-top: 1.5rem;
