@@ -58,8 +58,8 @@ router.get('/:id/download', auth, async (req, res) => {
       [req.params.id, req.user.userId]
     );
     if (!rows[0]) return res.status(404).json({ error: 'File not found.' });
-    log(req.user.userId, 'download', rows[0].original_name);
     res.download(path.join(UPLOADS, rows[0].filename), rows[0].original_name);
+    log(req.user.userId, 'download', rows[0].original_name);
   } catch {
     res.status(500).json({ error: 'Download failed.' });
   }

@@ -5,7 +5,7 @@ if (!process.env.JWT_SECRET) {
   process.exit(1);
 }
 
-const app  = require('./src/app');
+const app = require('./src/app');
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
